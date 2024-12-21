@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Sincronizzazione Database</title>
+</head>
+<body>
+  <button onclick="avviaSincronizzazione()">Avvia Sincronizzazione</button>
+  <p id="status"></p>
+
+  <script>
+    function avviaSincronizzazione() {
+      fetch('http://localhost:3000/sync')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('status').innerText = data;
+        })
+        .catch(error => {
+          console.error('Errore durante la sincronizzazione:', error);
+        });
+    }
+  </script>
+</body>
+</html>
