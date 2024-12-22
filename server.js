@@ -1511,9 +1511,9 @@ app.get('/get-updated-records', (req, res) => {
 
 
 
-app.listen(port, () => {
-  console.log(`Server in esecuzione su http://0.0.0.0:${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Server in esecuzione su http://0.0.0.0:${port}`);
+// });
 
 
 //Questa versione restituisce una versione XML che quindi forse posso eliminare percHè la gestisco con un JSON
