@@ -7,7 +7,8 @@ const crypto = require('crypto');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 3000;
+//const port = 3000;
+const port = process.env.PORT || 3000; // Usa la porta fornita da Render o 3000 in locale
 
 require('dotenv').config();
 
@@ -65,7 +66,7 @@ app.get('/', (req, res) => {
 
 // Ascolta su tutte le interfacce
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Server in esecuzione su http://localhost:${port}`);
+    console.log(`Server in esecuzione su http://0.0.0.0:${port}`);
 });
 
 // Controlla che le variabili siano definite
@@ -1511,7 +1512,7 @@ app.get('/get-updated-records', (req, res) => {
 
 
 app.listen(port, () => {
-  console.log(`Server in esecuzione su http://localhost:${port}`);
+  console.log(`Server in esecuzione su http://0.0.0.0:${port}`);
 });
 
 
