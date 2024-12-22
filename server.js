@@ -1336,6 +1336,7 @@ app.get('/get-records', (req, res) => {
 });
 
 app.get('/export-timestamps', (req, res) => {
+    console.log(`[LOG] Richiesta ricevuta: ${req.method} ${req.url}`);
     const db = new sqlite3.Database('UpAndDown.db');
     const query = "SELECT CF, LastModified FROM Anagrafica";
 
