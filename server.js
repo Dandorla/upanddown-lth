@@ -35,6 +35,12 @@ process.env.LC_ALL = 'it_IT';
 process.env.LANG = 'it_IT';
 process.env.LANGUAGE = 'it_IT';
 
+app.use((req, res, next) => {
+  console.log(`[LOG] Richiesta: ${req.method} ${req.url}`);
+  console.log(`[LOG] Intestazioni:`, req.headers);
+  next();
+});
+
 ///////////////////////////////
 
 //console.log("ENCRYPTION_KEY:", process.env.ENCRYPTION_KEY);
