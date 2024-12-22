@@ -10,6 +10,20 @@ const app = express();
 //const port = 3000;
 const port = process.env.PORT || 3000; // Usa la porta fornita da Render o 3000 in locale
 
+
+const cors = require('cors');
+
+// Configurazione generica (aperta a tutti)
+app.use(cors());
+
+const corsOptions = {
+  origin: 'https://upanddown-lth.onrender.com', // Sostituisci con il dominio del tuo client
+  methods: 'GET,POST',
+  allowedHeaders: 'Content-Type,Authorization',
+};
+
+app.use(cors(corsOptions));
+
 require('dotenv').config();
 
 app.use(bodyParser.urlencoded({ extended: true }));
