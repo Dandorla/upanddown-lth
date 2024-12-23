@@ -1343,7 +1343,7 @@ app.get('/export-timestamps', (req, res) => {
   db.all(query, [], (err, rows) => {
       if (err) {
           console.error("Errore nell'esportazione dei timestamp:", err.message);
-          res.status(500).send("Errore nell'esportazione dei timestamp.");
+          res.status(500).json({ message: "Errore nell'esportazione dei timestamp." });
           return;
       }
 
@@ -1358,13 +1358,20 @@ app.get('/export-timestamps', (req, res) => {
       const filePath = './timestamps.xml';
       fs.writeFileSync(filePath, xml);
 
-      // Invia il file al client
-      res.download(filePath, 'timestamps.xml', (err) => {
-          if (err) {
-              console.error("Errore nell'invio del file:", err.message);
-              res.status(500).send("Errore nell'invio del file.");
+      // Leggi il file e invialo come contenuto raw (per il client VB.NET)
+      fs.readFile(filePath, (readErr, data) => {
+          if (readErr) {
+              console.error("Errore nella lettura del file:", readErr.message);
+              res.status(500).json({ message: "Errore nella lettura del file." });
+              return;
           }
-          db.close();
+
+          // Invia il file con tipo di contenuto specificato
+          res.setHeader('Content-Disposition', 'attachment; filename="timestamps.xml"');
+          res.setHeader('Content-Type', 'application/xml');
+          res.send(data);
+
+          db.close(); // Chiudi il database
       });
   });
 });
