@@ -1336,37 +1336,37 @@ app.get('/get-records', (req, res) => {
 });
 
 app.get('/export-timestamps', (req, res) => {
-    console.log(`[LOG] Richiesta ricevuta: ${req.method} ${req.url}`);
-    res.status(200).json({ message: 'Endpoint funzionante!' });
-    const db = new sqlite3.Database('UpAndDown.db');
-    const query = "SELECT CF, LastModified FROM Anagrafica";
+  console.log(`[LOG] Richiesta ricevuta: ${req.method} ${req.url}`);
+  const db = new sqlite3.Database('UpAndDown.db');
+  const query = "SELECT CF, LastModified FROM Anagrafica";
 
-    db.all(query, [], (err, rows) => {
-        if (err) {
-            console.error("Errore nell'esportazione dei timestamp:", err.message);
-            res.status(500).send("Errore nell'esportazione dei timestamp.");
-            return;
-        }
+  db.all(query, [], (err, rows) => {
+      if (err) {
+          console.error("Errore nell'esportazione dei timestamp:", err.message);
+          res.status(500).send("Errore nell'esportazione dei timestamp.");
+          return;
+      }
 
-        // Crea l'XML
-        let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<Records>\n';
-        rows.forEach(row => {
-            xml += `  <Record>\n    <CF>${row.CF}</CF>\n    <LastModified>${row.LastModified}</LastModified>\n  </Record>\n`;
-        });
-        xml += '</Records>';
+      // Crea l'XML
+      let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<Records>\n';
+      rows.forEach(row => {
+          xml += `  <Record>\n    <CF>${row.CF}</CF>\n    <LastModified>${row.LastModified}</LastModified>\n  </Record>\n`;
+      });
+      xml += '</Records>';
 
-        // Salva il file XML
-        const filePath = './timestamps.xml';
-        fs.writeFileSync(filePath, xml);
+      // Salva il file XML
+      const filePath = './timestamps.xml';
+      fs.writeFileSync(filePath, xml);
 
-        // Invia il file al client
-        res.download(filePath, 'timestamps.xml', (err) => {
-            if (err) {
-                console.error("Errore nell'invio del file:", err.message);
-            }
-            db.close();
-        });
-    });
+      // Invia il file al client
+      res.download(filePath, 'timestamps.xml', (err) => {
+          if (err) {
+              console.error("Errore nell'invio del file:", err.message);
+              res.status(500).send("Errore nell'invio del file.");
+          }
+          db.close();
+      });
+  });
 });
 
 app.post('/export-records', (req, res) => {
